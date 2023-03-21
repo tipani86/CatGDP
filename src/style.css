@@ -1,0 +1,47 @@
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    .appview-container .main .block-container {
+        padding-top: 3rem;
+        padding-bottom: 0rem;
+    }
+
+    .appview-container .css-163ttbj .css-1vq4p4l {
+        padding-top: 2rem;
+        padding-bottom: 0rem;
+    }
+
+    .human-line {
+        display: flex;
+        font-family: "Source Sans Pro", sans-serif, "Segoe UI", "Roboto", sans-serif;
+        height: auto;
+        margin: 5px;
+        width: 100%;
+        flex-direction: row-reverse;
+    }
+
+    .AI-line {
+        display: flex;
+        font-family: "Source Sans Pro", sans-serif, "Segoe UI", "Roboto", sans-serif;
+        height: auto;
+        margin: 5px;
+        width: 100%;
+    }
+
+    .chat-bubble {
+        display: inline-block;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 5px 10px;
+        margin: 0px 5px;
+        max-width: 70%;
+    }
+
+    .chat-icon {
+        border-radius: 5px;
+    }
