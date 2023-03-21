@@ -103,7 +103,7 @@ async def main(human_prompt: str) -> dict:
         human_prompt = human_prompt.replace("<", "&lt;").replace(">", "&gt;")
 
         # Update both chat log and the model memory
-        st.session_state.LOG.append("Human: " + human_prompt)
+        st.session_state.LOG.append(f"Human: {human_prompt}")
         st.session_state.MEMORY.append({'role': "user", 'content': human_prompt})
 
         # Clear the input box after human_prompt is used
@@ -180,18 +180,20 @@ async def main(human_prompt: str) -> dict:
 
             for resp in api_res:
                 for artifact in resp.artifacts:
-                    if DEBUG:
-                        with st.sidebar:
-                            st.json(MessageToJson(resp), expanded=False)
-
                     if artifact.finish_reason == generation.FILTER:
                         st.warning("Your request activated the API's safety filters and could not be processed. Please modify the prompt and try again.")
                         # st.stop()
                     if artifact.type == generation.ARTIFACT_IMAGE:
                         b64str = base64.b64encode(artifact.binary).decode("utf-8")
 
+                        if DEBUG:
+                            with st.sidebar:
+                                st.json(MessageToJson(resp), expanded=False)
+
+                        break
+
             # Render the reply as chat reply
-            message = f"""{reply_text}<br><br><img src="data:image/png;base64,{b64str}" width=256 height=256 alt="AI Generated Image">"""
+            message = f"""{reply_text}<br><img src="data:image/png;base64,{b64str}" width=256 height=256 alt="AI Generated Image">"""
             if DEBUG:
                 message += f"""<br>{image_prompt}"""
             reply_box.markdown(get_chat_message(message), unsafe_allow_html=True)
@@ -200,7 +202,7 @@ async def main(human_prompt: str) -> dict:
             writing_animation.empty()
 
             # Update the chat log and the model memory
-            st.session_state.LOG.append(message)
+            st.session_state.LOG.append(f"AI: {message}")
             st.session_state.MEMORY.append({'role': "assistant", 'content': reply_text})
 
     except:
