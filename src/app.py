@@ -166,6 +166,9 @@ async def main(human_prompt: str) -> dict:
                 reply_text = chatbot_res['data']
                 image_prompt = f"Photorealistic image of a cat. {reply_text}"
 
+            if reply_text.startswith("Meow:"):
+                reply_text = reply_text.split("Meow:", 1)[1]
+
             # Step 2: Generate the image using Stable Diffusion
             api_res = stability_api.generate(
                 prompt=image_prompt,
@@ -174,9 +177,11 @@ async def main(human_prompt: str) -> dict:
             if DEBUG:
                 with st.sidebar:
                     st.write("stability_api_res")
-                    st.json(MessageToJson(api_res[0]), expanded=False)
 
             for resp in api_res:
+                if DEBUG:
+                    with st.sidebar:
+                        st.json(MessageToJson(resp), expanded=False)
                 for artifact in resp.artifacts:
                     if artifact.finish_reason == generation.FILTER:
                         st.warning("Your request activated the API's safety filters and could not be processed. Please modify the prompt and try again.")
