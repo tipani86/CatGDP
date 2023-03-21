@@ -246,6 +246,9 @@ st.write("")
 prompt_box = st.empty()
 footer = st.container()
 
+with footer:
+    st.markdown("""<div align=right><a href="https://github.com/tipani86/CatGDP"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/tipani86/CatGDP?style=social"></a></div>""", unsafe_allow_html=True)
+
 if DEBUG:
     with st.sidebar:
         st.subheader("Debug area")
