@@ -8,6 +8,7 @@ import streamlit as st
 from transformers import AutoTokenizer
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
+from google.protobuf.json_format import MessageToJson
 from app_config import *
 from utils import *
 
@@ -173,7 +174,7 @@ async def main(human_prompt: str) -> dict:
             if DEBUG:
                 with st.sidebar:
                     st.write("stability_api_res")
-                    st.json(api_res, expanded=False)
+                    st.json(MessageToJson(api_res[0]), expanded=False)
 
             for resp in api_res:
                 for artifact in resp.artifacts:
