@@ -1,5 +1,4 @@
 import os
-import json
 import base64
 import aiohttp
 import asyncio
@@ -132,6 +131,12 @@ async def main(human_prompt: str) -> dict:
                     st.session_state.MEMORY,
                     os.getenv("OPENAI_API_KEY")
                 )
+
+                if DEBUG:
+                    with st.sidebar:
+                        st.write("prompt_res")
+                        st.json(prompt_res, expanded=False)
+
                 if prompt_res['status'] != 0:
                     res['status'] = prompt_res['status']
                     res['message'] = prompt_res['message']
@@ -143,6 +148,11 @@ async def main(human_prompt: str) -> dict:
                     prompt_res['data']['messages'],
                     os.getenv("OPENAI_API_KEY")
                 )
+
+                if DEBUG:
+                    with st.sidebar:
+                        st.write("chatbot_res")
+                        st.json(chatbot_res, expanded=False)
 
                 if chatbot_res['status'] != 0:
                     res['status'] = chatbot_res['status']
@@ -159,6 +169,11 @@ async def main(human_prompt: str) -> dict:
             api_res = stability_api.generate(
                 prompt=image_prompt,
             )
+
+            if DEBUG:
+                with st.sidebar:
+                    st.write("stability_api_res")
+                    st.json(api_res, expanded=False)
 
             for resp in api_res:
                 for artifact in resp.artifacts:
@@ -196,6 +211,14 @@ st.set_page_config(
     page_icon=favicon,
 )
 
+# Get query parameters
+query_params = st.experimental_get_query_params()
+if "debug" in query_params and query_params["debug"][0].lower() == "true":
+    st.session_state.DEBUG = True
+
+if "DEBUG" in st.session_state and st.session_state.DEBUG:
+    DEBUG = True
+
 
 # Initialize some useful class instances
 with st.spinner("Initializing App..."):
@@ -206,8 +229,6 @@ with st.spinner("Initializing App..."):
 
 
 # Define main layout
-if DEBUG:
-    st.info("DEBUG MODE ON")
 st.title("Meow")
 st.subheader("I iz CatGDP, meow-speak anypawdy to me and I'll purr-ly there with a paw-some meow reply. 🐱")
 st.subheader("")
@@ -215,6 +236,10 @@ chat_box = st.container()
 st.write("")
 prompt_box = st.empty()
 footer = st.container()
+
+if DEBUG:
+    with st.sidebar:
+        st.subheader("Debug area")
 
 
 # Load CSS code
