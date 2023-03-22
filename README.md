@@ -1,7 +1,7 @@
 # CatGDP
 ​Meow meow, dis iz a GitPurr repository of CatGDP fur feline whiskerful conversations. Pawsome, right? Hiss-tory in the making! Happy Caturday! 🐾 
 
-Talk with a cat, anytime, anywhere. Get infinite furry feline images. Waste time, destroy productivity and GDP. Purrrrr...
+Chat with a #cat, anytime, anywhere. Get #infinite purrrly cat images, and utterly destroy your #productivity and #GDP.
 
 Try it: https://www.CatGDP.com
 
