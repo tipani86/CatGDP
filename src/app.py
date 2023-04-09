@@ -273,7 +273,7 @@ if "MEMORY" not in st.session_state:
 
 # Render chat history so far
 with chat_box:
-    for i, line in enumerate(st.session_state.LOG[1:]):
+    for line in st.session_state.LOG[1:]:
         # For AI response
         if line.startswith("AI: "):
             contents = line.split("AI: ")[1]

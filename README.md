@@ -12,3 +12,7 @@ Running the service and making those API calls don't come fur-ee so any paw-nati
 - ![DOGE](https://img.shields.io/badge/DOGE-DJCJpk61fwKNEQgPoK7fP8frojubAjuMUZ-yellowgreen)
 
 <img src="https://dogecoin.com/assets/images/dogecoin-2.png" width=100 height=100 alt="DOGE">
+
+## Shoutouts
+
+- The `Streamlit-chat` component at https://github.com/AI-Yash/st-chat. Though I didn't end up including the project directly as a requirement because there were some details I could not control, I was inspired by their CSS design and edited it for my own purposes and implemented in this and many of my other chatbot projects.
