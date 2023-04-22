@@ -7,7 +7,7 @@ Try it: https://www.CatGDP.com
 
 Running the service and making those API calls don't come fur-ee so any paw-nations are more than purr-come. :heart:
 
-- ![DOGE](https://img.shields.io/badge/DOGE-DJCJpk61fwKNEQgPoK7fP8frojubAjuMUZ-yellowgreen)
+![DOGE](https://img.shields.io/badge/DOGE-DJCJpk61fwKNEQgPoK7fP8frojubAjuMUZ-yellowgreen)
 
 <img src="https://dogecoin.com/assets/images/dogecoin-2.png" width=100 height=100 alt="DOGE">
 
