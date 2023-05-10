@@ -21,8 +21,8 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 errors = []
 for key in [
-    "OPENAI_API_KEY", "OPENAI_API_BASE", "OPENAI_API_TYPE"  # For OpenAI APIs
-    "STABILITY_HOST", "STABILITY_API_KEY",  # For Stability APIs
+    "OPENAI_API_KEY", "OPENAI_API_BASE", "OPENAI_API_TYPE", # For OpenAI APIs
+    "STABILITY_HOST", "STABILITY_API_KEY",                  # For Stability APIs
 ]:
     if key not in os.environ:
         errors.append(f"Please set the {key} environment variable.")
