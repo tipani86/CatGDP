@@ -12,7 +12,7 @@ async def get_chatbot_reply_async(
     presence_penalty: float = NLP_MODEL_PRESENCE_PENALTY,
     stop: list = NLP_MODEL_STOP_WORDS,
 ) -> str:
-    return await openai.ChatCompletion.acreate(
+    response = await openai.ChatCompletion.acreate(
         model=model,
         engine=engine,
         messages=messages,
@@ -21,7 +21,9 @@ async def get_chatbot_reply_async(
         frequency_penalty=frequency_penalty,
         presence_penalty=presence_penalty,
         stop=stop,
-    )['choices'][0]['message']['content'].strip()
+        timeout=TIMEOUT,
+    )
+    return response['choices'][0]['message']['content'].strip()
 
 
 # Make sure the entered prompt adheres to the model max context length, and summarize if necessary
