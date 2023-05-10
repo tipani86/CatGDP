@@ -1,6 +1,5 @@
 import os
 import base64
-import aiohttp
 import asyncio
 import traceback
 from PIL import Image
@@ -22,7 +21,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 errors = []
 for key in [
-    "OPENAI_API_KEY", "OPENAI_ORG_ID",  # For OpenAI APIs
+    "OPENAI_API_KEY", "OPENAI_API_BASE", "OPENAI_API_TYPE"  # For OpenAI APIs
     "STABILITY_HOST", "STABILITY_API_KEY",  # For Stability APIs
 ]:
     if key not in os.environ:
@@ -123,47 +122,37 @@ async def main(human_prompt: str) -> dict:
             file_path = os.path.join(ROOT_DIR, "src", "assets", "loading.gif")
             writing_animation.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;<img src='data:image/gif;base64,{get_local_img(file_path)}' width=30 height=10>", unsafe_allow_html=True)
 
-            async with aiohttp.ClientSession() as httpclient:
-                # Step 1: Generate the AI-aided image prompt using ChatGPT API
-                # (but we first need to generate the prompt for ChatGPT!)
-                prompt_res = await generate_prompt_from_memory_async(
-                    httpclient,
-                    TOKENIZER,
-                    st.session_state.MEMORY,
-                    os.getenv("OPENAI_API_KEY")
-                )
+            # Step 1: Generate the AI-aided image prompt using ChatGPT API
+            # (but we first need to generate the prompt for ChatGPT!)
+            prompt_res = await generate_prompt_from_memory_async(
+                TOKENIZER,
+                st.session_state.MEMORY
+            )
 
-                if DEBUG:
-                    with st.sidebar:
-                        st.write("prompt_res")
-                        st.json(prompt_res, expanded=False)
+            if DEBUG:
+                with st.sidebar:
+                    st.write("prompt_res")
+                    st.json(prompt_res, expanded=False)
 
-                if prompt_res['status'] != 0:
-                    res['status'] = prompt_res['status']
-                    res['message'] = prompt_res['message']
-                    return res
+            if prompt_res['status'] != 0:
+                res['status'] = prompt_res['status']
+                res['message'] = prompt_res['message']
+                return res
 
-                # Call the OpenAI ChatGPT API
-                chatbot_res = await get_chatbot_reply_data_async(
-                    httpclient,
-                    prompt_res['data']['messages'],
-                    os.getenv("OPENAI_API_KEY")
-                )
+            # Call the OpenAI ChatGPT API
+            chatbot_response = await get_chatbot_reply_async(
+                prompt_res['data']['messages']
+            )
 
-                if DEBUG:
-                    with st.sidebar:
-                        st.write("chatbot_res")
-                        st.json(chatbot_res, expanded=False)
+            if DEBUG:
+                with st.sidebar:
+                    st.write("chatbot_response")
+                    st.json({'str': chatbot_response}, expanded=False)
 
-                if chatbot_res['status'] != 0:
-                    res['status'] = chatbot_res['status']
-                    res['message'] = chatbot_res['message']
-                    return res
-
-            if "Description:" in chatbot_res['data']:
-                reply_text, image_prompt = chatbot_res['data'].split("Description:")
+            if "Description:" in chatbot_response:
+                reply_text, image_prompt = chatbot_response.split("Description:")
             else:
-                reply_text = chatbot_res['data']
+                reply_text = chatbot_response
                 image_prompt = f"Photorealistic image of a cat. {reply_text}"
 
             if reply_text.startswith("Meow: "):
@@ -178,6 +167,7 @@ async def main(human_prompt: str) -> dict:
                 with st.sidebar:
                     st.write("stability_api_res")
 
+            b64str = None
             for resp in api_res:
                 for artifact in resp.artifacts:
                     if artifact.finish_reason == generation.FILTER:
@@ -193,7 +183,9 @@ async def main(human_prompt: str) -> dict:
                         break
 
             # Render the reply as chat reply
-            message = f"""{reply_text}<br><img src="data:image/png;base64,{b64str}" width=256 height=256 alt="AI Generated Image">"""
+            message = f"{reply_text}"
+            if b64str:
+                message += f"""<br><img src="data:image/png;base64,{b64str}" width=256 height=256 alt="AI Generated Image">"""
             if DEBUG:
                 message += f"""<br>{image_prompt}"""
             reply_box.markdown(get_chat_message(message), unsafe_allow_html=True)
@@ -249,8 +241,8 @@ footer = st.container()
 with footer:
     st.markdown("""
     <div align=right><small>
-    Page views: <img src="https://www.cutercounter.com/hits.php?id=hvxndaff&nd=6&style=1" border="0" alt="hit counter"><br>
-    Unique visitors: <img src="https://www.cutercounter.com/hits.php?id=hxndkqx&nd=4&style=2" border="0" alt="website counter"><br>
+    Page views: <img src="https://www.cutercounter.com/hits.php?id=hvxndaff&nd=5&style=1" border="0" alt="hit counter"><br>
+    Unique visitors: <img src="https://www.cutercounter.com/hits.php?id=hxndkqx&nd=5&style=1" border="0" alt="website counter"><br>
     GitHub <a href="https://github.com/tipani86/CatGDP"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/tipani86/CatGDP?style=social"></a>
     </small></div>
     """, unsafe_allow_html=True)
