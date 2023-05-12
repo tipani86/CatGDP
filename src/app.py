@@ -138,10 +138,13 @@ async def main(human_prompt: str) -> dict:
                 res['status'] = prompt_res['status']
                 res['message'] = prompt_res['message']
                 return res
+            
+            # Update the memory from prompt res
+            st.session_state.MEMORY = prompt_res['data']['messages']
 
             # Call the OpenAI ChatGPT API
             chatbot_response = await get_chatbot_reply_async(
-                prompt_res['data']['messages']
+                st.session_state.MEMORY
             )
 
             if DEBUG:
