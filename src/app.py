@@ -164,6 +164,10 @@ async def main(human_prompt: str) -> dict:
             # Step 2: Generate the image using Stable Diffusion
             api_res = stability_api.generate(
                 prompt=image_prompt,
+                steps=30,
+                width=512,
+                height=512,
+                samples=1,
             )
 
             if DEBUG:
