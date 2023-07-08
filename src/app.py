@@ -33,9 +33,9 @@ if len(errors) > 0:
 stability_api = client.StabilityInference(
     key=os.environ['STABILITY_API_KEY'],  # API Key reference.
     # verbose=True,  # Print debug messages.
-    engine="stable-diffusion-v1-5",  # Set the engine to use for generation. For SD 2.0 use "stable-diffusion-v2-0".
-    # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0
-    # stable-diffusion-512-v2-1 stable-diffusion-768-v2-1 stable-inpainting-v1-0 stable-inpainting-512-v2-0
+    engine="stable-diffusion-512-v2-1", # Set the engine to use for generation.
+    # Available engines: stable-diffusion-xl-1024-v0-9 stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0
+    # stable-diffusion-512-v2-1 stable-diffusion-768-v2-1 stable-diffusion-xl-beta-v2-2-2 stable-inpainting-v1-0 stable-inpainting-512-v2-0
 )
 
 ### FUNCTION DEFINITIONS ###
