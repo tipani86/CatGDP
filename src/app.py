@@ -33,9 +33,9 @@ if len(errors) > 0:
 stability_api = client.StabilityInference(
     key=os.environ['STABILITY_API_KEY'],  # API Key reference.
     # verbose=True,  # Print debug messages.
-    engine="stable-diffusion-v1-5",  # Set the engine to use for generation. For SD 2.0 use "stable-diffusion-v2-0".
-    # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0
-    # stable-diffusion-512-v2-1 stable-diffusion-768-v2-1 stable-inpainting-v1-0 stable-inpainting-512-v2-0
+    engine="stable-diffusion-512-v2-1", # Set the engine to use for generation.
+    # Available engines: stable-diffusion-xl-1024-v0-9 stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0
+    # stable-diffusion-512-v2-1 stable-diffusion-768-v2-1 stable-diffusion-xl-beta-v2-2-2 stable-inpainting-v1-0 stable-inpainting-512-v2-0
 )
 
 ### FUNCTION DEFINITIONS ###
@@ -138,10 +138,13 @@ async def main(human_prompt: str) -> dict:
                 res['status'] = prompt_res['status']
                 res['message'] = prompt_res['message']
                 return res
+            
+            # Update the memory from prompt res
+            st.session_state.MEMORY = prompt_res['data']['messages']
 
             # Call the OpenAI ChatGPT API
             chatbot_response = await get_chatbot_reply_async(
-                prompt_res['data']['messages']
+                st.session_state.MEMORY
             )
 
             if DEBUG:
