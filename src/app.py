@@ -33,7 +33,7 @@ if len(errors) > 0:
 stability_api = client.StabilityInference(
     key=os.environ['STABILITY_API_KEY'],  # API Key reference.
     # verbose=True,  # Print debug messages.
-    engine="stable-diffusion-v1-5", # Set the engine to use for generation.
+    engine="stable-diffusion-xl-1024-v1-0", # Set the engine to use for generation.
     # Available engines: stable-diffusion-xl-1024-v0-9 stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0
     # stable-diffusion-512-v2-1 stable-diffusion-768-v2-1 stable-diffusion-xl-beta-v2-2-2 stable-inpainting-v1-0 stable-inpainting-512-v2-0
 )
@@ -165,8 +165,8 @@ async def main(human_prompt: str) -> dict:
             api_res = stability_api.generate(
                 prompt=image_prompt,
                 steps=30,
-                width=512,
-                height=512,
+                # width=512,
+                # height=512,
                 samples=1,
             )
 
