@@ -219,14 +219,6 @@ st.set_page_config(
     page_icon=favicon,
 )
 
-# Get query parameters
-query_params = st.experimental_get_query_params()
-if "debug" in query_params and query_params["debug"][0].lower() == "true":
-    st.session_state.DEBUG = True
-
-if "DEBUG" in st.session_state and st.session_state.DEBUG:
-    DEBUG = True
-
 
 # Initialize some useful class instances
 with st.spinner("Initializing App..."):
@@ -293,11 +285,11 @@ with prompt_box:
 if len(human_prompt) > 0:
     run_res = asyncio.run(main(human_prompt))
     if run_res['status'] == 0 and not DEBUG:
-        st.experimental_rerun()
+        st.rerun()
 
     else:
         if run_res['status'] != 0:
             st.error(run_res['message'])
         with prompt_box:
             if st.button("Show text input field"):
-                st.experimental_rerun()
+                st.rerun()
