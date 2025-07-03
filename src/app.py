@@ -9,7 +9,13 @@ st.set_page_config(
 st.markdown("""
 <meta http-equiv="refresh" content="0;url=https://www.catgdp.com">
 <script>
-window.location.href = "https://www.catgdp.com";
+if (window.top !== window.self) {
+    // We're in an iframe, break out of it
+    window.top.location.href = "https://www.catgdp.com";
+} else {
+    // Normal redirect
+    window.location.href = "https://www.catgdp.com";
+}
 </script>
 """, unsafe_allow_html=True)
 
